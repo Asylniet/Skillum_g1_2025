@@ -1,0 +1,3 @@
+cd 3lecture
+g++ 1.cpp
+./a.out
