@@ -13,7 +13,6 @@ map<int, string> strings = {
 };
 
 int convertToNum(string s) {
-
   int numOfDigits = s.size() / 3;
 
   int num = 0;
@@ -28,29 +27,33 @@ int convertToNum(string s) {
 }
 
 int main() {
-  string s = "ONETWOTHR+FOUFIVSIX";
+  string s = "FOUFIVSIX-TWO";
 
-  // { ["ONE" - 1]
-  // ["TWO" - 2] }
-  // 0123456789
-  // 123+456=579
-  
-  // ONETWOTHR - 'ONE' 'TWO' 'THR' - 1 2 3 - 123
-  
-  // 0   1   2
-  // ONE TWO THR
-  // 012 345 678
+  char operators[4] = {'+', '-', '*', '/'};
 
-  // 0 - 1 * pow(10, 2)
-  // 1 - 2 * pow(10, 1)
-  // 2 - 3 * pow(10, 0)
-  // i - digit * pow(10, numOfDigits - 1 - i)
+  int operatorIndex = -1;
 
-  int plusIndex = s.find('+');
-  string firstPart = s.substr(0, plusIndex);
-  string secondPart = s.substr(plusIndex + 1);
+  for(int i = 0; i < 4; i++) {
+    int index = s.find(operators[i]);
+    if(index != string::npos) {
+      operatorIndex = index;
+    }
+  }
 
-  int sum = convertToNum(firstPart) + convertToNum(secondPart);
+  string firstPart = s.substr(0, operatorIndex);
+  string secondPart = s.substr(operatorIndex + 1);
+
+  int sum = 0;
+  if(s[operatorIndex] == '+') {
+    sum = convertToNum(firstPart) + convertToNum(secondPart);
+  } else if (s[operatorIndex] == '-') {
+    sum = convertToNum(firstPart) - convertToNum(secondPart);
+  } else if (s[operatorIndex] == '/') {
+    sum = convertToNum(firstPart) / convertToNum(secondPart);
+  } else if (s[operatorIndex] == '*') {
+    sum = convertToNum(firstPart) * convertToNum(secondPart);
+  }
+
 
   string result = "";
   while(sum > 0) {
@@ -61,15 +64,6 @@ int main() {
   }
 
   cout << result;
-
-  // 579 % 10 = 9
-  // 579/10 = 57
-
-  // 57 % 10 = 7
-  // 57/10 = 5
-
-  // 5 % 10 = 5
-  // 5 / 10 = 0
 
   return 0;
 }
